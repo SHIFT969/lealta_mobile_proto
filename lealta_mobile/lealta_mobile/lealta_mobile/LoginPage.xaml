@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:lealta_mobile"
+             x:Class="lealta_mobile.LoginPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout BackgroundColor="#FFFFFF" Padding="0">
+                <StackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Start" HeightRequest="70" >
+                    <Image Margin="10,5,0,0" Source="logo_hat.png" Aspect="AspectFit" HeightRequest="70" />
+                </StackLayout>
+                <StackLayout Padding="20, 0" Orientation="Horizontal">
+                    <Image Source="icon_phone"/>
+                    <Label Text="+7 (499) 579-90-70" TextColor="Black" />
+                </StackLayout>
+                <StackLayout Padding="20, 0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" BackgroundColor="#D1CFD1" >
+                    <Label Text="Личный кабинет" FontSize="36" TextColor="#F45719" Margin="0, 20" />
+                    <Frame x:Name="loginFrame" BackgroundColor="White" OutlineColor="AliceBlue" Padding="5, 1">
+                        <local:NoBorderEntry x:Name="loginEntry" FontSize="Small" Placeholder="Введите номер договора или телефона" Focused="LoginEntry_Focused" />
+                    </Frame>
+                    <Label x:Name="loginNote" FontSize="Micro" Margin="8,0,8,5" TextColor="#7C7374" Text="Например: 240191, 9601236060"/>
+                    <Frame x:Name="pasFrame" BackgroundColor="White" Padding="5, 0">
+                        <local:NoBorderEntry x:Name="passwordEntry" FontSize="Small" Placeholder="Введите пароль" IsPassword ="True" Focused="PasswordEntry_Focused" />
+                    </Frame>
+                    <Label x:Name="pasNote" FontSize="Micro" Margin="8,0,8,5" TextColor="Red" Text="Заполните это поле" IsVisible="False"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Запомнить меня" VerticalOptions="Center"/>
+                        <Switch x:Name="rememberUser" />
+                    </StackLayout>
+                    <Button Text= "Войти в личный кабинет" 
+                            FontSize="Medium" 
+                            HorizontalOptions="Center" 
+                            Clicked="LogonButtonClicked" 
+                            x:Name="LogonButton"
+                            BackgroundColor="#F45719"
+                            TextColor="White"
+                            Margin="0, 20" />
+                </StackLayout>
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <StackLayout x:Name="restorePas1" HorizontalOptions="Center">
+                        <Label FontSize="Large" TextColor="Black" Text="Восстановить пароль" Margin="15" />
+                        <StackLayout HorizontalOptions="Center" WidthRequest="80">
+                            <Button x:Name="RestorePasswordButton" BackgroundColor="#F45719" Image="arrow_point_down24.png" Clicked="RestorePasswordButton_Clicked" />
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout x:Name="restorePas2" HorizontalOptions="FillAndExpand" IsVisible="False">
+                        <Frame BackgroundColor="White" Padding="5, 0" Margin="10, 0" HorizontalOptions="FillAndExpand">
+                            <local:NoBorderEntry x:Name="telephoneEntry" Keyboard="Telephone" FontSize="Small" Placeholder="Введите номер телефона" />
+                        </Frame>
+                        <Button x:Name="RestorePasswordByNumber" 
+                                BackgroundColor="#F45719" 
+                                TextColor="White" 
+                                Text="Получить пароль по СМС"
+                                HorizontalOptions="Center" 
+                                Clicked="RestorePasswordByNumber_Clicked" />
+                    </StackLayout>
+                    <StackLayout x:Name="numberCheckFail" HorizontalOptions="Center" IsVisible="False">
+                        <Label x:Name="numberCheckFailMessage" Text=""/>
+                        <Label x:Name="numberCheckFailReturn" Text="Вернуться на форму" BackgroundColor="#F45719" Margin="0,10,0,0"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
