@@ -148,7 +148,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SQLiteResolver_Droid.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Visual\NoBorderEntryEntryRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

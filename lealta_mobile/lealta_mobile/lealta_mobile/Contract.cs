@@ -1,11 +1,7 @@
-﻿using SQLite;
-
-namespace lealta_mobile
+﻿namespace lealta_mobile
 {
-    [Table("Contracts")]
     public class Contract
     {
-        [PrimaryKey, AutoIncrement, Column("_id")]
         public int Id { get; set; }
 
         public string ContractId { get; set; }
