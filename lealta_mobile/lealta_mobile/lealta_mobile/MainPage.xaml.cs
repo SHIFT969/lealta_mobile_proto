@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +14,8 @@ namespace lealta_mobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
+        private static readonly HttpClient client = new HttpClient();
+
         public MainPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
@@ -25,19 +29,24 @@ namespace lealta_mobile
             financesSwitchRecognizer.Tapped += (s, e) => OpenFinancesTab(s, e);
             financesSwitchGroup.GestureRecognizers.Add(financesSwitchRecognizer);
 
-            object curr = new Contract();
-            if (App.Current.Properties.TryGetValue("currentContract", out curr))
+            UpdateData();
+        }
+
+        private async void UpdateData()
+        {
+            object t = "";
+            if (App.Current.Properties.TryGetValue("token", out t))
             {
-                var contract = curr as Contract;
-                contactData.Text = contract.Adress;
-                balance.Text = contract.Balance.ToString("0.00");
-                contractNumber.Text = contract.ContractNumber.ToString();
-                contractRate.Text = contract.Rate;
+                string token = t as string;
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await client.GetAsync("http://172.26.26.30/api/data/clientinfo");
+
+
+                //contactData.Text = contract.Adress;
+                //balance.Text = contract.Balance.ToString("0.00");
+                //contractNumber.Text = contract.ContractNumber.ToString();
+                //contractRate.Text = contract.Rate;
             }
-
-            var a = new TapGestureRecognizer();
-
-            //ChandePassControl
         }
 
         public void OpenProfileTab(object sender, System.EventArgs e)

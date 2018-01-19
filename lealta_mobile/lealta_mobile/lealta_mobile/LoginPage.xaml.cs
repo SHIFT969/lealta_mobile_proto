@@ -5,11 +5,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace lealta_mobile
 {
     public partial class LoginPage : ContentPage
     {
+        private static readonly HttpClient client = new HttpClient();
+
         public LoginPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
@@ -41,44 +45,75 @@ namespace lealta_mobile
 
             var login = loginEntry.Text;
             string num = Regex.Replace(login, @"\ |\(|\)|-", "");
-            //Contract acc = null;
-            Contract acc = new Contract()
-            {
-                ContractId = "123",
-                ContractNumber = "+79131554117",
-                Password = "qwe",
-                Balance = 500.50M,
-                UserName = "Вася Ложкин",
-                Rate = "План А",
-                Frozen = false,
-                Adress = "Гражданская ул., дом 5, кв. 12"
-            };
-            if (login == acc.ContractId && passwordEntry.Text == acc.Password)
-            {
-                object curr = new Contract();
-                if (App.Current.Properties.TryGetValue("currentContract", out curr))
-                    App.Current.Properties["currentContract"] = acc;
-                else
-                    App.Current.Properties.Add("currentContract", acc);
 
+            if (await Login())
+            {
                 var page = new MainPage();
+                passwordEntry.Text = "";
                 await Navigation.PushAsync(page, true);
             }
+        }
 
-            //try
-            //{
-            //    if (await App.Database.CheckNumber(num))
-            //        acc = await App.Database.GetItemByNumberPas(num, passwordEntry.Text);
-            //    else
-            //        acc = await App.database.GetItemByIdPas(login, passwordEntry.Text);
-            //}
-            //catch (Exception ex)
-            //{
-            //    await DisplayAlert("Ошибка", ex.Message, "ОK");
-            //    return;
-            //}
+        private async Task<bool> Login()
+        {
+            var login = Regex.Replace(loginEntry.Text, @"[^\d]", "");
+            var response = await TryLogin(login); // попытка по логину
+            var responseString = await response.Content.ReadAsStringAsync();
+            var respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
 
-            //await DisplayAlert("Добро пожаловать", $"{acc.UserName}, ваш баланс {acc.Balance}, договор {(acc.Frozen ? "" : "не")} заморожен", "ОK");
+            bool passed = true;
+            if (respObj.ContainsKey("error"))
+            {
+                passed = false;
+                login = login.Remove(0, 1);
+                response = await TryLogin(login); // попытка по телефону, убирается первая цифра
+                responseString = await response.Content.ReadAsStringAsync();
+                respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
+
+                if (respObj.ContainsKey("error"))
+                {
+                    passed = false;
+                    await DisplayAlert("Не удалось войти в систему", $@"Сервер вернул ошибку \""{respObj["error"]}\"". Описание: {respObj["error_description"]}", "ОK");
+                }
+                else passed = true;
+            }
+
+            if (passed)
+            {
+                if (respObj.ContainsKey("access_token"))
+                {
+                    object curr = "";
+                    string t = respObj["access_token"];
+                    if (App.Current.Properties.TryGetValue("token", out curr))
+                        App.Current.Properties["token"] = t;
+                    else
+                        App.Current.Properties.Add("token", t);
+                    return true;
+                }
+                else
+                {
+                    await DisplayAlert("Ошибка", $@"Ответ сервера не содержит данных", "ОK");
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private async Task<HttpResponseMessage> TryLogin(string login)
+        {
+            var values = new Dictionary<string, string>
+            {
+                { "username", login },
+                { "password", passwordEntry.Text },
+                { "grant_type", "password" }
+            };
+
+            var content = new FormUrlEncodedContent(values);
+            var response = await client.PostAsync("http://172.26.26.30/token", content);
+            return response;
         }
 
         private void LoginEntry_Focused(object sender, FocusEventArgs e)
@@ -107,6 +142,11 @@ namespace lealta_mobile
         {
             restorePas1.IsVisible = false;
             restorePas2.IsVisible = true;
+        }
+
+        private void loginEntryIOS_Focused(object sender, FocusEventArgs e)
+        {
+
         }
     }
 }
