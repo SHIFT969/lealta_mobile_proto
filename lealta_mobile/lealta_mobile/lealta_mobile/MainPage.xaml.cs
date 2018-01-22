@@ -5,9 +5,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Globalization;
 
 namespace lealta_mobile
 {
@@ -34,18 +36,43 @@ namespace lealta_mobile
 
         private async void UpdateData()
         {
-            object t = "";
-            if (App.Current.Properties.TryGetValue("token", out t))
+            try
             {
-                string token = t as string;
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var response = await client.GetAsync("http://172.26.26.30/api/data/clientinfo");
+                object t = new Token();
+                if (App.Current.Properties.TryGetValue("token", out t))
+                {
+                    //await DisplayAlert("f1", "", "OK");
+                    Token token = t as Token;
+                    if (!await Expired(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+                        //await DisplayAlert("f2", "", "OK");
+                        var response = await client.GetAsync("http://172.26.26.30/api/data/clientinfo");
 
-
-                //contactData.Text = contract.Adress;
-                //balance.Text = contract.Balance.ToString("0.00");
-                //contractNumber.Text = contract.ContractNumber.ToString();
-                //contractRate.Text = contract.Rate;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            //await DisplayAlert("f3", "", "OK");
+                            var responseString = await response.Content.ReadAsStringAsync();
+                            var respObj = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(responseString);
+                            //await DisplayAlert("f4", "", "OK");
+                            if (respObj.ContainsKey("data"))
+                            {
+                                var data = respObj["data"];
+                                //await DisplayAlert("f5", "", "OK");
+                                contactData.Text = data["address"];
+                                balance.Text = decimal.Parse(data["balance"], CultureInfo.InvariantCulture).ToString("0.00");
+                                //contractNumber.Text = contract.ContractNumber.ToString();
+                                contractRate.Text = data["tarif"];
+                            }
+                            else await Exit();
+                        }
+                        else await Exit();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Ошибка", e.StackTrace, "OK");
             }
         }
 
@@ -83,6 +110,23 @@ namespace lealta_mobile
 
         private async void ExitButton_Clicked(object sender, EventArgs e)
         {
+            await Exit();
+        }
+
+        private async Task<bool> Expired(Token t)
+        {
+            if (t.ExpiresAt <= DateTime.Now)
+            {
+                await Navigation.PopAsync();
+                return true;
+            }
+            else return false;
+        }
+
+        private async Task Exit()
+        {
+            if (App.Current.Properties.ContainsKey("token"))
+                App.Current.Properties.Remove("token");
             await Navigation.PopAsync();
         }
     }

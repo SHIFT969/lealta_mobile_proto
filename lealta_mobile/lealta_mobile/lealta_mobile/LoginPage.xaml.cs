@@ -56,49 +56,68 @@ namespace lealta_mobile
 
         private async Task<bool> Login()
         {
-            var login = Regex.Replace(loginEntry.Text, @"[^\d]", "");
-            var response = await TryLogin(login); // попытка по логину
-            var responseString = await response.Content.ReadAsStringAsync();
-            var respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
-
-            bool passed = true;
-            if (respObj.ContainsKey("error"))
+            try
             {
-                passed = false;
-                login = login.Remove(0, 1);
-                response = await TryLogin(login); // попытка по телефону, убирается первая цифра
-                responseString = await response.Content.ReadAsStringAsync();
-                respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
+                var login = Regex.Replace(loginEntry.Text, @"[^\d]", "");
+                var response = await TryLogin(login); // попытка по логину
+                var responseString = await response.Content.ReadAsStringAsync();
+                var respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
 
+                bool passed = true;
                 if (respObj.ContainsKey("error"))
                 {
                     passed = false;
-                    await DisplayAlert("Не удалось войти в систему", $@"Сервер вернул ошибку \""{respObj["error"]}\"". Описание: {respObj["error_description"]}", "ОK");
-                }
-                else passed = true;
-            }
+                    login = login.Remove(0, 1);
+                    response = await TryLogin(login); // попытка по телефону, убирается первая цифра
+                    responseString = await response.Content.ReadAsStringAsync();
+                    respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
 
-            if (passed)
-            {
-                if (respObj.ContainsKey("access_token"))
+                    if (respObj.ContainsKey("error"))
+                    {
+                        passed = false;
+                        await DisplayAlert("Не удалось войти в систему", $@"Сервер вернул ошибку \""{respObj["error"]}\"". Описание: {respObj["error_description"]}", "ОK");
+                    }
+                    else passed = true;
+                }
+
+                if (passed)
                 {
-                    object curr = "";
-                    string t = respObj["access_token"];
-                    if (App.Current.Properties.TryGetValue("token", out curr))
-                        App.Current.Properties["token"] = t;
+                    if (respObj.ContainsKey("access_token"))
+                    {
+                        object curr = "";
+                        var t = new Token();
+                        t.AccessToken = respObj["access_token"];
+                        t.AssinedAt = DateTime.Now;
+                        if (long.TryParse(respObj["expires_in"], out t.ExpiresIn))
+                        {
+                            t.ExpiresAt = t.AssinedAt.AddSeconds(t.ExpiresIn);
+                            if (App.Current.Properties.TryGetValue("token", out curr))
+                                App.Current.Properties["token"] = t;
+                            else
+                                App.Current.Properties.Add("token", t);
+                            return true;
+                        }
+                        else
+                        {
+                            await DisplayAlert("Ошибка", "Не удалось прочитать ответ сервера", "ОK");
+                            return false;
+                        }
+                    }
                     else
-                        App.Current.Properties.Add("token", t);
-                    return true;
+                    {
+                        await DisplayAlert("Ошибка", "Ответ сервера не содержит данных", "ОK");
+                        return false;
+                    }
                 }
                 else
                 {
-                    await DisplayAlert("Ошибка", $@"Ответ сервера не содержит данных", "ОK");
                     return false;
                 }
             }
-            else
+            catch (Exception e)
             {
-                return true;
+                await (DisplayAlert("Ошибка", e.ToString(), "OK"));
+                return false;
             }
         }
 
