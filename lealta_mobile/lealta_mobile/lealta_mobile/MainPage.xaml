@@ -34,11 +34,11 @@
                                 <Image Source="icon_location24.png" />
                                 <Label x:Name="contactData" Text="Нет данных" TextColor="Black"/>
                             </StackLayout>
-                            <Label Text="Сменить пароль" TextColor="#F45719" x:Name="ChandePassControl">
+                            <!--<Label Text="Сменить пароль" TextColor="#F45719" x:Name="ChandePassControl">
                                 <Label.Effects>
                                     <visual:UnderlineEffect />
                                 </Label.Effects>
-                            </Label>
+                            </Label>-->
                         </StackLayout>
                     </StackLayout>
                     <StackLayout Spacing="0">
@@ -56,12 +56,12 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label Text="Статистика" TextColor="#F45719">
+                            <!--<Label Text="Статистика" TextColor="#F45719">
                                 <Label.Effects>
                                     <visual:UnderlineEffect />
                                 </Label.Effects>
-                            </Label>
-                            <BoxView Color="Gray" HeightRequest="1"/>
+                            </Label>-->
+                            <BoxView Color="Gray" HeightRequest="1"/><!--это горизонтальный разделитель-->
                             <Label>
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -78,9 +78,9 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <BoxView Color="Gray" HeightRequest="1"/>
+                            <!--<BoxView Color="Gray" HeightRequest="1"/>
                             <Label Text="Смотрите беспроводное ТВ Смотрёшка на любом устройстве везде, где есть интернет!" TextColor="Black"/>
-                            <Button Text="Подробнее" BackgroundColor="#F45719" TextColor="White" HorizontalOptions="Center"/>
+                            <Button Text="Подробнее" BackgroundColor="#F45719" TextColor="White" HorizontalOptions="Center"/>-->
                         </StackLayout>
                     </StackLayout>
                     <StackLayout BackgroundColor="White" Padding="10">

@@ -14,7 +14,7 @@
                     <Label Text="+7 (499) 579-90-70" TextColor="Black" />
                 </StackLayout>
                 <StackLayout Padding="20, 0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" BackgroundColor="#D1CFD1" >
-                    <Label Text="Личный кабинет" FontSize="36" TextColor="#F45719" Margin="0, 20" />
+                    <Label x:Name="cabinetLabel" Text="Личный кабинет" FontSize="36" TextColor="#F45719" Margin="0, 20" />
                     <Frame x:Name="loginFrame" BackgroundColor="White" OutlineColor="AliceBlue" Padding="5, 1">
                         <local:NoBorderEntry x:Name="loginEntry" FontSize="Small" Placeholder="Введите номер договора или телефона" Focused="LoginEntry_Focused" />
                     </Frame>
@@ -23,15 +23,16 @@
                         <local:NoBorderEntry x:Name="passwordEntry" FontSize="Small" Placeholder="Введите пароль" IsPassword ="True" Focused="PasswordEntry_Focused" />
                     </Frame>
                     <Label x:Name="pasNote" FontSize="Micro" Margin="8,0,8,5" TextColor="Red" Text="Заполните это поле" IsVisible="False"/>
-                    <StackLayout Orientation="Horizontal">
+                    <!--<StackLayout Orientation="Horizontal">
                         <Label Text="Запомнить меня" VerticalOptions="Center"/>
                         <Switch x:Name="rememberUser" />
-                    </StackLayout>
+                    </StackLayout>-->
                     <Button Text= "Войти в личный кабинет" 
                             FontSize="Medium" 
                             HorizontalOptions="Center" 
                             Clicked="LogonButtonClicked" 
                             x:Name="LogonButton"
+                            BorderColor="#F45719"
                             BackgroundColor="#F45719"
                             TextColor="White"
                             Margin="0, 20" />

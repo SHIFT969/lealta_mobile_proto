@@ -20,6 +20,11 @@ namespace lealta_mobile
             InitializeComponent();
             loginEntry.Completed += (s, e) => passwordEntry.Focus();
             passwordEntry.Completed += (s, e) => LogonButtonClicked(s, e);
+
+            //var metrics = Resources.DisplayMetrics;
+            //var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
+
+            //cabinetLabel.FontSize = 
         }
 
         public async void LogonButtonClicked(object sender, System.EventArgs e)
@@ -75,7 +80,7 @@ namespace lealta_mobile
                     if (respObj.ContainsKey("error"))
                     {
                         passed = false;
-                        await DisplayAlert("Не удалось войти в систему", $@"Сервер вернул ошибку \""{respObj["error"]}\"". Описание: {respObj["error_description"]}", "ОK");
+                        await DisplayAlert("Ошибка", respObj["error_description"], "OK");
                     }
                     else passed = true;
                 }
