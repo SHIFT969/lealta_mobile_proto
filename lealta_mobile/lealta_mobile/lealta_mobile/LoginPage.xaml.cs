@@ -21,10 +21,7 @@ namespace lealta_mobile
             loginEntry.Completed += (s, e) => passwordEntry.Focus();
             passwordEntry.Completed += (s, e) => LogonButtonClicked(s, e);
 
-            //var metrics = Resources.DisplayMetrics;
-            //var widthInDp = ConvertPixelsToDp(metrics.WidthPixels);
-
-            //cabinetLabel.FontSize = 
+            LogonButton.BackgroundColor = Color.FromHex("F45719");
         }
 
         public async void LogonButtonClicked(object sender, System.EventArgs e)

@@ -32,10 +32,9 @@
                             HorizontalOptions="Center" 
                             Clicked="LogonButtonClicked" 
                             x:Name="LogonButton"
-                            BorderColor="#F45719"
                             BackgroundColor="#F45719"
                             TextColor="White"
-                            Margin="0, 20" />
+                            Margin="0, 20"/>
                 </StackLayout>
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                     <StackLayout x:Name="restorePas1" HorizontalOptions="Center">

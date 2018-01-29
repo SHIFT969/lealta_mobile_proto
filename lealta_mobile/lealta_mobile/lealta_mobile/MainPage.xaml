@@ -2,123 +2,157 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:visual="clr-namespace:lealta_mobile.visual_helpers"
+             xmlns:controls="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
              x:Class="lealta_mobile.MainPage">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout BackgroundColor="#FFFFFF" Padding="0">
-                <StackLayout HorizontalOptions="Start" VerticalOptions="Start">
-                    <StackLayout Orientation="Horizontal" VerticalOptions="Start" HeightRequest="70" >
-                        <Image Margin="10,5,0,0" Source="logo_hat.png" Aspect="AspectFit" HorizontalOptions="StartAndExpand" />
-                        <Label Text=" " HorizontalOptions="StartAndExpand"/>
-                        <Button x:Name="ExitButton" Text="Выйти" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" TextColor="#F45719" Clicked="ExitButton_Clicked">
+        <controls:PullToRefreshLayout
+            x:Name="PTRLayout"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy}"
+            RefreshColor="#F45719">
+            <ScrollView>
+                <StackLayout BackgroundColor="#FFFFFF" Padding="0">
+                    <StackLayout HorizontalOptions="Start" VerticalOptions="Start">
+
+                        <Grid VerticalOptions="Start">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Image Margin="10,5,0,0" Source="logo_hat.png" Aspect="AspectFit" HorizontalOptions="Start" />
+                            <Button x:Name="ExitButton" 
+                                    Text="Выйти" 
+                                    BackgroundColor="Transparent"
+                                    VerticalOptions="CenterAndExpand" 
+                                    HorizontalOptions="End" 
+                                    TextColor="#F45719" 
+                                    Clicked="ExitButton_Clicked" 
+                                    Grid.Column="1">
+                                <Label.Effects>
+                                    <visual:UnderlineEffect />
+                                </Label.Effects>
+                            </Button>
+                        </Grid>
+                        
+                        <!--<StackLayout Orientation="Horizontal" VerticalOptions="Start" HeightRequest="70" HorizontalOptions="FillAndExpand" >
+                            <Image Margin="10,5,0,0" Source="logo_hat.png" Aspect="AspectFit" HorizontalOptions="StartAndExpand" />
+                            <Button x:Name="ExitButton" Text="Выйти" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" TextColor="#F45719" Clicked="ExitButton_Clicked">
+                                <Label.Effects>
+                                    <visual:UnderlineEffect />
+                                </Label.Effects>
+                            </Button>
+                        </StackLayout>-->
+                        
+                        <StackLayout Padding="20, 0" Orientation="Horizontal">
+                            <Image Source="icon_phone"/>
+                            <Label Text="+7 (499) 579-90-70" TextColor="Black" />
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Spacing="20" Padding="20" HorizontalOptions="FillAndExpand" VerticalOptions="Start" BackgroundColor="#EFEFEF" >
+                        <StackLayout Spacing="0">
+                            <StackLayout x:Name="profileSwitchGroup" Padding="8" Orientation="Horizontal" BackgroundColor="#DBDBDB">
+                                <Label x:Name="profileSwitchLabel" Text="Мой профиль" TextColor="#F45719" HorizontalOptions="StartAndExpand" FontSize="Large"/>
+                                <Image x:Name="profileSwitch" Source="arrow_in_circle_point_to_right24.png"  />
+                            </StackLayout>
+                            <StackLayout Padding="8" x:Name="profileTab" IsVisible="False"  BackgroundColor="#DBDBDB" Margin="0">
+                                <Label Text="Здравствуйте!" TextColor="Black"/>
+                                <Label Text="Ваши контактные данные:" FontAttributes="Bold" TextColor="Black"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="icon_location24.png" />
+                                    <Label x:Name="contactData" Text="Нет данных" TextColor="Black"/>
+                                </StackLayout>
+                                <!--<Label Text="Сменить пароль" TextColor="#F45719" x:Name="ChandePassControl">
+                                    <Label.Effects>
+                                        <visual:UnderlineEffect />
+                                    </Label.Effects>
+                                </Label>-->
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Spacing="0">
+                            <StackLayout x:Name="financesSwitchGroup"  Padding="8" Orientation="Horizontal" BackgroundColor="#DBDBDB">
+                                <Label x:Name="financesSwitchLabel" Text="Мои финансы" TextColor="#F45719" HorizontalOptions="StartAndExpand" FontSize="Large"/>
+                                <Image x:Name="financesSwitch" Source="arrow_in_circle_point_to_right24.png"  />
+                            </StackLayout>
+                            <StackLayout Padding="8" x:Name="financesTab" IsVisible="False"  BackgroundColor="#DBDBDB" Margin="0">
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="На счету: " ForegroundColor="Black"/>
+                                            <Span Text="0,00" FontAttributes="Bold" ForegroundColor="#F45719" x:Name="balance" />
+                                            <Span Text=" руб." ForegroundColor="#F45719" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <!--<Label Text="Статистика" TextColor="#F45719">
+                                    <Label.Effects>
+                                        <visual:UnderlineEffect />
+                                    </Label.Effects>
+                                </Label>-->
+                                <BoxView Color="Gray" HeightRequest="1"/><!--это горизонтальный разделитель-->
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Договор: " ForegroundColor="Black" />
+                                            <Span Text="---" FontAttributes="Bold" x:Name="contractNumber" ForegroundColor="Black" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Тариф: " ForegroundColor="Black" />
+                                            <Span Text="---" FontAttributes="Bold" x:Name="contractRate" ForegroundColor="#F45719" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <!--<BoxView Color="Gray" HeightRequest="1"/>
+                                <Label Text="Смотрите беспроводное ТВ Смотрёшка на любом устройстве везде, где есть интернет!" TextColor="Black"/>
+                                <Button Text="Подробнее" BackgroundColor="#F45719" TextColor="White" HorizontalOptions="Center"/>-->
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout BackgroundColor="White" Padding="10">
+                            <Label Text="Услуга Заморозка договора доступна на вашем договоре" TextColor="Black" FontAttributes="Bold" FontSize="Medium"/>
+                            <StackLayout Orientation="Horizontal" HeightRequest="64">
+                                <Image Source="ic_term1.png" Margin="5" Aspect="AspectFit" />
+                                <StackLayout VerticalOptions="Center" Spacing="3">
+                                    <Label Text="Срок предоставления" TextColor="Black" Margin="0" />
+                                    <Label Text="не ограничен" TextColor="Black" FontAttributes="Bold" Margin="0"/>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" HeightRequest="64">
+                                <Image Source="ic_term2.png" Margin="5" Aspect="AspectFit" />
+                                <StackLayout VerticalOptions="Center" Spacing="3">
+                                    <Label Text="Стоимость подключения" TextColor="Black" Margin="0" />
+                                    <Label Text="бесплатно" TextColor="Black" FontAttributes="Bold" Margin="0"/>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" HeightRequest="64">
+                                <Image Source="ic_term3.png" Margin="5" Aspect="AspectFit" />
+                                <StackLayout VerticalOptions="Center" Spacing="3">
+                                    <Label Text="Стоимость услуги" TextColor="Black" Margin="0" />
+                                    <Label Text="1 р./сутки" TextColor="Black" FontAttributes="Bold" Margin="0"/>
+                                </StackLayout>
+                            </StackLayout>
+                            <Button Text="Заблокировать договор" BackgroundColor="#F45719" TextColor="White" FontSize="Large" HorizontalOptions="Center" Margin="10"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="ic_megafon.png" Margin="5" />
+                                <Label Text="Распространяется на все услуги, подключенные на договоре" TextColor="Black" VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+                        </StackLayout>
+                        <Label Text="Полные условия предоставления" TextColor="#F45719" HorizontalOptions="Center" Margin="5">
                             <Label.Effects>
                                 <visual:UnderlineEffect />
                             </Label.Effects>
-                        </Button>
-                    </StackLayout>
-                    <StackLayout Padding="20, 0" Orientation="Horizontal">
-                        <Image Source="icon_phone"/>
-                        <Label Text="+7 (499) 579-90-70" TextColor="Black" />
+                        </Label>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout Spacing="20" Padding="20" HorizontalOptions="FillAndExpand" VerticalOptions="Start" BackgroundColor="#EFEFEF" >
-                    <StackLayout Spacing="0">
-                        <StackLayout x:Name="profileSwitchGroup" Padding="8" Orientation="Horizontal" BackgroundColor="#DBDBDB">
-                            <Label x:Name="profileSwitchLabel" Text="Мой профиль" TextColor="#F45719" HorizontalOptions="StartAndExpand" FontSize="Large"/>
-                            <Image x:Name="profileSwitch" Source="arrow_in_circle_point_to_right24.png"  />
-                        </StackLayout>
-                        <StackLayout Padding="8" x:Name="profileTab" IsVisible="False"  BackgroundColor="#DBDBDB" Margin="0">
-                            <Label Text="Здравствуйте!" TextColor="Black"/>
-                            <Label Text="Ваши контактные данные:" FontAttributes="Bold" TextColor="Black"/>
-                            <StackLayout Orientation="Horizontal">
-                                <Image Source="icon_location24.png" />
-                                <Label x:Name="contactData" Text="Нет данных" TextColor="Black"/>
-                            </StackLayout>
-                            <!--<Label Text="Сменить пароль" TextColor="#F45719" x:Name="ChandePassControl">
-                                <Label.Effects>
-                                    <visual:UnderlineEffect />
-                                </Label.Effects>
-                            </Label>-->
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout Spacing="0">
-                        <StackLayout x:Name="financesSwitchGroup"  Padding="8" Orientation="Horizontal" BackgroundColor="#DBDBDB">
-                            <Label x:Name="financesSwitchLabel" Text="Мои финансы" TextColor="#F45719" HorizontalOptions="StartAndExpand" FontSize="Large"/>
-                            <Image x:Name="financesSwitch" Source="arrow_in_circle_point_to_right24.png"  />
-                        </StackLayout>
-                        <StackLayout Padding="8" x:Name="financesTab" IsVisible="False"  BackgroundColor="#DBDBDB" Margin="0">
-                            <Label>
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="На счету: " ForegroundColor="Black"/>
-                                        <Span Text="0,00" FontAttributes="Bold" ForegroundColor="#F45719" x:Name="balance" />
-                                        <Span Text=" руб." ForegroundColor="#F45719" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <!--<Label Text="Статистика" TextColor="#F45719">
-                                <Label.Effects>
-                                    <visual:UnderlineEffect />
-                                </Label.Effects>
-                            </Label>-->
-                            <BoxView Color="Gray" HeightRequest="1"/><!--это горизонтальный разделитель-->
-                            <Label>
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="Договор: " ForegroundColor="Black" />
-                                        <Span Text="---" FontAttributes="Bold" x:Name="contractNumber" ForegroundColor="Black" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label>
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="Тариф: " ForegroundColor="Black" />
-                                        <Span Text="---" FontAttributes="Bold" x:Name="contractRate" ForegroundColor="#F45719" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <!--<BoxView Color="Gray" HeightRequest="1"/>
-                            <Label Text="Смотрите беспроводное ТВ Смотрёшка на любом устройстве везде, где есть интернет!" TextColor="Black"/>
-                            <Button Text="Подробнее" BackgroundColor="#F45719" TextColor="White" HorizontalOptions="Center"/>-->
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout BackgroundColor="White" Padding="10">
-                        <Label Text="Услуга Заморозка договора доступна на вашем договоре" TextColor="Black" FontAttributes="Bold" FontSize="Medium"/>
-                        <StackLayout Orientation="Horizontal" HeightRequest="64">
-                            <Image Source="ic_term1.png" Margin="5" Aspect="AspectFit" />
-                            <StackLayout VerticalOptions="Center" Spacing="3">
-                                <Label Text="Срок предоставления" TextColor="Black" Margin="0" />
-                                <Label Text="не ограничен" TextColor="Black" FontAttributes="Bold" Margin="0"/>
-                            </StackLayout>
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal" HeightRequest="64">
-                            <Image Source="ic_term2.png" Margin="5" Aspect="AspectFit" />
-                            <StackLayout VerticalOptions="Center" Spacing="3">
-                                <Label Text="Стоимость подключения" TextColor="Black" Margin="0" />
-                                <Label Text="бесплатно" TextColor="Black" FontAttributes="Bold" Margin="0"/>
-                            </StackLayout>
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal" HeightRequest="64">
-                            <Image Source="ic_term3.png" Margin="5" Aspect="AspectFit" />
-                            <StackLayout VerticalOptions="Center" Spacing="3">
-                                <Label Text="Стоимость услуги" TextColor="Black" Margin="0" />
-                                <Label Text="1 р./сутки" TextColor="Black" FontAttributes="Bold" Margin="0"/>
-                            </StackLayout>
-                        </StackLayout>
-                        <Button Text="Заблокировать договор" BackgroundColor="#F45719" TextColor="White" FontSize="Large" HorizontalOptions="Center" Margin="10"/>
-                        <StackLayout Orientation="Horizontal">
-                            <Image Source="ic_megafon.png" Margin="5" />
-                            <Label Text="Распространяется на все услуги, подключенные на договоре" TextColor="Black" VerticalOptions="CenterAndExpand"/>
-                        </StackLayout>
-                    </StackLayout>
-                    <Label Text="Полные условия предоставления" TextColor="#F45719" HorizontalOptions="Center" Margin="5">
-                        <Label.Effects>
-                            <visual:UnderlineEffect />
-                        </Label.Effects>
-                    </Label>
-                </StackLayout>
-            </StackLayout>
-        </ScrollView>
+            </ScrollView>
+        </controls:PullToRefreshLayout>
     </ContentPage.Content>
 </ContentPage>

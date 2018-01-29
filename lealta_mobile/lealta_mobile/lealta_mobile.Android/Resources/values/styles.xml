@@ -23,7 +23,7 @@
 
     <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
 
-    <item name="android:buttonStyle">@style/mybutton</item>
+    <!--<item name="android:buttonStyle">@style/mybutton</item>-->
     <item name="android:textAppearanceButton">@style/mybutton.text</item>
   </style>
 

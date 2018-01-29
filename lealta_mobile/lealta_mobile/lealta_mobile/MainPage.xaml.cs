@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Refractored.XamForms.PullToRefresh;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -21,7 +22,9 @@ namespace lealta_mobile
         public MainPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
+            _refreshCommand = new Command(UpdateData);
             InitializeComponent();
+            PTRLayout.RefreshCommand = RefreshCommand;
 
             var profileSwitchRecognizer = new TapGestureRecognizer();
             profileSwitchRecognizer.Tapped += (s, e) => OpenProfileTab(s, e);
@@ -34,31 +37,36 @@ namespace lealta_mobile
             UpdateData();
         }
 
+        Command _refreshCommand;
+        public Command RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand;
+            }
+        }
+
         private async void UpdateData()
         {
             try
             {
+                PTRLayout.IsRefreshing = true;
                 object t = new Token();
                 if (App.Current.Properties.TryGetValue("token", out t))
                 {
-                    //await DisplayAlert("f1", "", "OK");
                     Token token = t as Token;
                     if (!await Expired(token))
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
-                        //await DisplayAlert("f2", "", "OK");
                         var response = await client.GetAsync("http://172.26.26.30/api/data/clientinfo");
 
                         if (response.IsSuccessStatusCode)
                         {
-                            //await DisplayAlert("f3", "", "OK");
                             var responseString = await response.Content.ReadAsStringAsync();
                             var respObj = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(responseString);
-                            //await DisplayAlert("f4", "", "OK");
                             if (respObj.ContainsKey("data"))
                             {
                                 var data = respObj["data"];
-                                //await DisplayAlert("f5", "", "OK");
                                 contactData.Text = data["address"];
                                 balance.Text = decimal.Parse(data["balance"], CultureInfo.InvariantCulture).ToString("0.00");
                                 //contractNumber.Text = contract.ContractNumber.ToString();
@@ -72,7 +80,11 @@ namespace lealta_mobile
             }
             catch (Exception e)
             {
-                await DisplayAlert("Ошибка", e.StackTrace, "OK");
+                await DisplayAlert("Ошибка", e.ToString(), "OK");
+            }
+            finally
+            {
+                PTRLayout.IsRefreshing = false;
             }
         }
 
