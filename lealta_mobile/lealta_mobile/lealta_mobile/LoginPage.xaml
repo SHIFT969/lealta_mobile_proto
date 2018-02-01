@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:lealta_mobile"
+             xmlns:visual="clr-namespace:lealta_mobile.visual_helpers"
              x:Class="lealta_mobile.LoginPage">
     <ContentPage.Content>
         <ScrollView>
@@ -28,13 +29,13 @@
                         <Switch x:Name="rememberUser" />
                     </StackLayout>-->
                     <Button Text= "Войти в личный кабинет" 
-                            FontSize="Medium" 
-                            HorizontalOptions="Center" 
-                            Clicked="LogonButtonClicked" 
-                            x:Name="LogonButton"
-                            BackgroundColor="#F45719"
-                            TextColor="White"
-                            Margin="0, 20"/>
+                        FontSize="Medium" 
+                        HorizontalOptions="Center" 
+                        Clicked="LogonButtonClicked" 
+                        x:Name="LogonButton"
+                        BackgroundColor="#F45719"
+                        TextColor="White"
+                        Margin="0, 20"/>
                 </StackLayout>
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                     <StackLayout x:Name="restorePas1" HorizontalOptions="Center">
@@ -44,7 +45,7 @@
                         </StackLayout>
                     </StackLayout>
                     <StackLayout x:Name="restorePas2" HorizontalOptions="FillAndExpand" IsVisible="False">
-                        <Frame BackgroundColor="White" Padding="5, 0" Margin="10, 0" HorizontalOptions="FillAndExpand">
+                        <Frame BackgroundColor="White" OutlineColor="AliceBlue" Padding="5, 0" Margin="10, 0" HorizontalOptions="FillAndExpand">
                             <local:NoBorderEntry x:Name="telephoneEntry" Keyboard="Telephone" FontSize="Small" Placeholder="Введите номер телефона" />
                         </Frame>
                         <Button x:Name="RestorePasswordByNumber" 

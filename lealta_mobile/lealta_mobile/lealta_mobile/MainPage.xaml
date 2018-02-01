@@ -24,7 +24,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-                            
+
                             <Image Margin="10,5,0,0" Source="logo_hat.png" Aspect="AspectFit" HorizontalOptions="Start" />
                             <Button x:Name="ExitButton" 
                                     Text="Выйти" 
@@ -39,7 +39,7 @@
                                 </Label.Effects>
                             </Button>
                         </Grid>
-                        
+
                         <!--<StackLayout Orientation="Horizontal" VerticalOptions="Start" HeightRequest="70" HorizontalOptions="FillAndExpand" >
                             <Image Margin="10,5,0,0" Source="logo_hat.png" Aspect="AspectFit" HorizontalOptions="StartAndExpand" />
                             <Button x:Name="ExitButton" Text="Выйти" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" TextColor="#F45719" Clicked="ExitButton_Clicked">
@@ -48,7 +48,7 @@
                                 </Label.Effects>
                             </Button>
                         </StackLayout>-->
-                        
+
                         <StackLayout Padding="20, 0" Orientation="Horizontal">
                             <Image Source="icon_phone"/>
                             <Label Text="+7 (499) 579-90-70" TextColor="Black" />
@@ -94,7 +94,8 @@
                                         <visual:UnderlineEffect />
                                     </Label.Effects>
                                 </Label>-->
-                                <BoxView Color="Gray" HeightRequest="1"/><!--это горизонтальный разделитель-->
+                                <BoxView Color="Gray" HeightRequest="1"/>
+                                <!--это горизонтальный разделитель-->
                                 <Label>
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -116,7 +117,7 @@
                                 <Button Text="Подробнее" BackgroundColor="#F45719" TextColor="White" HorizontalOptions="Center"/>-->
                             </StackLayout>
                         </StackLayout>
-                        <StackLayout BackgroundColor="White" Padding="10">
+                        <StackLayout x:Name="freezeNotActive" IsVisible="True" BackgroundColor="White" Padding="10">
                             <Label Text="Услуга Заморозка договора доступна на вашем договоре" TextColor="Black" FontAttributes="Bold" FontSize="Medium"/>
                             <StackLayout Orientation="Horizontal" HeightRequest="64">
                                 <Image Source="ic_term1.png" Margin="5" Aspect="AspectFit" />
@@ -145,6 +146,23 @@
                                 <Label Text="Распространяется на все услуги, подключенные на договоре" TextColor="Black" VerticalOptions="CenterAndExpand"/>
                             </StackLayout>
                         </StackLayout>
+
+                        <StackLayout x:Name="freezeActivated" IsVisible="True" VerticalOptions="Center" BackgroundColor="White" Padding="10">
+                            <Label Text="Услуга подключена!" TextColor="Black" FontAttributes="Bold" FontSize="Large" Margin="0,0,0,10"/>
+                            <Label Text="Возвращайтесь скорее!" TextColor="Black" FontSize="Medium"/>
+                            <Label Text="Мы будем скучать" TextColor="Black" FontSize="Medium"/>
+                        </StackLayout>
+
+                        <StackLayout x:Name="freezeActive" IsVisible="True" VerticalOptions="Center" BackgroundColor="White" Padding="10">
+                            <Label Text="Мы знали, что вы вернетесь!" TextColor="Black" FontAttributes="Bold" FontSize="Large" Margin="0,0,0,10"/>
+                            <Button Text="Разблокировать договор" BackgroundColor="#F45719" TextColor="White" FontSize="Large" HorizontalOptions="Center" Margin="10"/>
+                        </StackLayout>
+
+                        <StackLayout x:Name="freezeDeactivated" IsVisible="True" VerticalOptions="Center" BackgroundColor="White" Padding="10">
+                            <Label Text="Ваш договор разблокирован." TextColor="Black" FontSize="Medium"/>
+                            <Label Text="Мы рады, что вы снова с нами!" TextColor="Black" FontAttributes="Bold" FontSize="Large" Margin="0,0,0,10"/>
+                        </StackLayout>
+
                         <Label Text="Полные условия предоставления" TextColor="#F45719" HorizontalOptions="Center" Margin="5">
                             <Label.Effects>
                                 <visual:UnderlineEffect />

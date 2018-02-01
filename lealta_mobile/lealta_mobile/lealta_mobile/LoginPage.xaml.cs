@@ -62,17 +62,15 @@ namespace lealta_mobile
             {
                 var login = Regex.Replace(loginEntry.Text, @"[^\d]", "");
                 var response = await TryLogin(login); // попытка по логину
-                var responseString = await response.Content.ReadAsStringAsync();
-                var respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
+
+                var respObj = await TryLogin(login);
 
                 bool passed = true;
                 if (respObj.ContainsKey("error"))
                 {
                     passed = false;
                     login = login.Remove(0, 1);
-                    response = await TryLogin(login); // попытка по телефону, убирается первая цифра
-                    responseString = await response.Content.ReadAsStringAsync();
-                    respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
+                    respObj = await TryLogin(login); // по телефону, бес первого символа
 
                     if (respObj.ContainsKey("error"))
                     {
@@ -123,18 +121,28 @@ namespace lealta_mobile
             }
         }
 
-        private async Task<HttpResponseMessage> TryLogin(string login)
+        private async Task<Dictionary<string, string>> TryLogin(string login)
         {
-            var values = new Dictionary<string, string>
+            try
             {
-                { "username", login },
-                { "password", passwordEntry.Text },
-                { "grant_type", "password" }
-            };
+                var values = new Dictionary<string, string>
+                {
+                    { "username", login },
+                    { "password", passwordEntry.Text },
+                    { "grant_type", "password" }
+                };
 
-            var content = new FormUrlEncodedContent(values);
-            var response = await client.PostAsync("http://172.26.26.30/token", content);
-            return response;
+                var content = new FormUrlEncodedContent(values);
+                var response = await client.PostAsync("http://172.26.26.30/token", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                var respObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseString);
+                return respObj;
+            }
+            catch
+            {
+                await DisplayAlert("Ошибка", "Не удалось получить ответ сервера", "ОK");
+                return null;
+            }
         }
 
         private void LoginEntry_Focused(object sender, FocusEventArgs e)

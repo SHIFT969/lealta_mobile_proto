@@ -47,11 +47,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis />
     <EnableProguard>true</EnableProguard>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>

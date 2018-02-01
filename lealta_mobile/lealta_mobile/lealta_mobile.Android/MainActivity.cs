@@ -10,7 +10,7 @@ using Refractored.XamForms.PullToRefresh.Droid;
 
 namespace lealta_mobile.Droid
 {
-    [Activity(Label = "Lealta личный кабинет", Theme = "@style/MainTheme", Icon = "@drawable/icon", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)] // ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation
+    [Activity(MainLauncher = true, Label = "Lealta личный кабинет", Theme = "@style/MainTheme", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)] // ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)

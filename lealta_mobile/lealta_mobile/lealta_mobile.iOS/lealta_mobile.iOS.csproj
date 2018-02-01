@@ -188,6 +188,9 @@
   <ItemGroup>
     <BundleResource Include="Resources\logo_hat.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Visual\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
